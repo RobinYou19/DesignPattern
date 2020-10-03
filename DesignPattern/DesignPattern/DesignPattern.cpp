@@ -1,20 +1,54 @@
 // DesignPattern.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+// Memory Check
+#define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
+#include <crtdbg.h>
+
+// STL
 #include <iostream>
+#include <vector>
+
+// Visitor Includes
+#include "SpecificContainer.h"
+#include "SpecificVisitor.h"
+
+namespace
+{
+    std::vector<int> dataVisitor;
+
+    void VisitorDesignPattern( )
+    {
+        for( int i = 0; i < 11; ++i )
+        {
+            dataVisitor.emplace_back( i );
+        }
+        SpecificContainer* pContainer = new SpecificContainer( dataVisitor );
+
+        SpecificVisitor* pVisitor = new SpecificVisitor( );
+
+        pContainer->Accept( pVisitor );
+
+        if( pContainer )
+            delete pContainer;
+        pContainer = nullptr;
+
+        if( pVisitor )
+            delete pVisitor;
+        pVisitor = nullptr;
+    }
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Starting Application ... \n";
+    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_DEBUG );
+
+    //_crtBreakAlloc = 166; // Memory Leak Breaker
+
+    // Visitor Design Pattern Scenario
+    VisitorDesignPattern();
+
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
